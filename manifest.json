@@ -1,0 +1,97 @@
+{
+  "manifest_version": 3,
+  "name": "FeedShield",
+  "version": "0.9.3",
+  "description": "Beta content controls for TikTok, major social platforms, and Etsy.",
+  "permissions": [
+    "storage",
+    "activeTab",
+    "tabs",
+    "clipboardWrite"
+  ],
+  "host_permissions": [
+    "*://www.tiktok.com/*",
+    "*://www.etsy.com/*",
+    "*://www.instagram.com/*",
+    "*://www.facebook.com/*",
+    "*://www.youtube.com/*",
+    "*://x.com/*",
+    "*://twitter.com/*",
+    "*://www.reddit.com/*",
+    "*://www.pinterest.com/*",
+    "*://bsky.app/*"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "FeedShield"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "*://www.tiktok.com/*"
+      ],
+      "js": [
+        "content.js"
+      ],
+      "css": [
+        "content.css"
+      ],
+      "run_at": "document_idle"
+    },
+    {
+      "matches": [
+        "*://www.etsy.com/*"
+      ],
+      "js": [
+        "etsy.js"
+      ],
+      "css": [
+        "content.css"
+      ],
+      "run_at": "document_idle"
+    },
+    {
+      "matches": [
+        "*://www.instagram.com/*",
+        "*://www.facebook.com/*",
+        "*://www.youtube.com/*",
+        "*://x.com/*",
+        "*://twitter.com/*",
+        "*://www.reddit.com/*",
+        "*://www.pinterest.com/*",
+        "*://bsky.app/*"
+      ],
+      "js": [
+        "generic.js"
+      ],
+      "css": [
+        "content.css"
+      ],
+      "run_at": "document_idle"
+    }
+  ],
+  "sandbox": {
+    "pages": [
+      "sandbox.html"
+    ]
+  },
+  "web_accessible_resources": [
+    {
+      "resources": [
+        "sandbox.html"
+      ],
+      "matches": [
+        "*://www.tiktok.com/*",
+        "*://www.etsy.com/*"
+      ]
+    }
+  ],
+  "content_security_policy": {
+    "extension_pages": "script-src 'self'; object-src 'self';",
+    "sandbox": "sandbox allow-scripts; script-src 'self' https://cdn.jsdelivr.net; object-src 'none';"
+  },
+  "version_name": "0.9.3 clean beta"
+}

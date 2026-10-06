@@ -1,0 +1,19 @@
+FEEDSHIELD CLEAN BETA v0.9.3
+
+IMPORTANT: Chrome cannot install the ZIP itself.
+
+1. Right-click the ZIP and choose Extract All.
+2. Open chrome://extensions in Chrome (or edge://extensions in Edge).
+3. Turn on Developer mode.
+4. Click Load unpacked.
+5. Select the extracted FeedShield_Clean_Beta_v0.9.3 folder.
+6. The correct folder contains manifest.json.
+
+All included sites:
+TikTok, Instagram, Facebook, YouTube, X, Reddit, Pinterest, Bluesky, and Etsy.
+
+TikTok is the only site with the optional experimental image check.
+Every site includes Tell FeedShield controls after it is enabled.
+
+All supported sites begin enabled. The browser may show one installation notice
+listing the sites FeedShield can access, but it will not ask again for each site.
