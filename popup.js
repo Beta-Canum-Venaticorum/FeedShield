@@ -1,16 +1,42 @@
-const siteOrigins={instagramEnabled:"https://www.instagram.com/*",facebookEnabled:"https://www.facebook.com/*",youtubeEnabled:"https://www.youtube.com/*",xEnabled:"https://x.com/*",redditEnabled:"https://www.reddit.com/*",pinterestEnabled:"https://www.pinterest.com/*",blueskyEnabled:"https://bsky.app/*",etsyEnabled:"https://www.etsy.com/*"};
-const defaults={protectionEnabled:true,protectionLevel:"balanced",protectSexual:true,protectGraphic:true,protectAnimalHarm:true,protectHate:true,protectAI:true,protectMisleading:true,protectNews:true,protectPromotional:true,tiktokEnabled:true,instagramEnabled:true,facebookEnabled:true,youtubeEnabled:true,xEnabled:true,redditEnabled:true,pinterestEnabled:true,blueskyEnabled:true,etsyEnabled:true,blockSponsored:false,blockDrama:true,blockSexualized:true,blockAI:true,visualScan:true,autoHideVisual:true,visualThreshold:60,showPlaceholder:true,frameCount:4,sampleWindowMs:3000,customTerms:"DramaBox\nReelShort\nShortMax\nGoodShort\nFlexTV\nMoboReels",blockedAdvertisers:[],blockedCategories:[],allowedAdvertisers:[],blockedEtsyShops:[],blockedCreators:[],manualFlags:[],hiddenItems:[]};
-const ids=["protectionEnabled","protectionLevel","protectSexual","protectGraphic","protectAnimalHarm","protectHate","protectAI","protectMisleading","protectNews","protectPromotional","tiktokEnabled",...Object.keys(siteOrigins),"blockSponsored","autoHideVisual","showPlaceholder","visualThreshold","frameCount","sampleWindowMs","customTerms"],$=id=>document.getElementById(id);
-function status(t){$("status").textContent=t;setTimeout(()=>{if($("status").textContent===t)$("status").textContent=""},2200)}
-function labels(){$("thresholdLabel").textContent=$("visualThreshold").value+"%";$("frameCountLabel").textContent=$("frameCount").value;$("sampleWindowLabel").textContent=(Number($("sampleWindowMs").value)/1000).toFixed(1)+"s"}
-function counts(c){$("manualFlagsCount").textContent=(c.manualFlags||[]).length;$("blockedSourcesCount").textContent=(c.blockedEtsyShops||[]).length+(c.blockedAdvertisers||[]).length+(c.blockedCreators||[]).length}
-function levelHelp(v){$("levelHelp").textContent={light:"Warns more often than it hides.",balanced:"Blurs likely matches while keeping an easy reveal option.",strong:"Hides more matches and may make more mistakes.",custom:"Uses the individual choices below."}[v]}
-function applyLevel(v){const p={light:{visualThreshold:75,autoHideVisual:false},balanced:{visualThreshold:60,autoHideVisual:true},strong:{visualThreshold:45,autoHideVisual:true}}[v];if(p){$("visualThreshold").value=p.visualThreshold;$("autoHideVisual").checked=p.autoHideVisual}levelHelp(v);labels()}
-function payload(){const p={};for(const id of ids){const e=$(id);p[id]=e.type==="checkbox"?e.checked:e.type==="range"?Number(e.value):e.value}p.blockDrama=p.protectPromotional;p.blockSexualized=p.protectSexual;p.blockAI=p.protectAI;p.visualScan=true;return p}
-function persist(){chrome.storage.local.set(payload(),()=>status("Settings saved"))}
-chrome.storage.local.get(defaults,c=>{for(const id of ids){const e=$(id);if(e.type==="checkbox")e.checked=c[id];else e.value=c[id]}counts(c);labels();levelHelp(c.protectionLevel)});
-for(const id of ids){const e=$(id);if(id==="protectionLevel")continue;e.addEventListener(e.type==="range"?"input":"change",()=>{if(["visualThreshold","frameCount","sampleWindowMs"].includes(id)){$("protectionLevel").value="custom";levelHelp("custom");labels()}persist()})}
-$("protectionLevel").addEventListener("change",e=>{applyLevel(e.target.value);persist()});
-$("enableVisual").onclick=async()=>{const[tab]=await chrome.tabs.query({active:true,currentWindow:true});if(!tab?.id||!/^https:\/\/www\.tiktok\.com\//.test(tab.url||"")){status("Open TikTok first");return}try{const r=await chrome.tabs.sendMessage(tab.id,{type:"FEEDSHIELD_ENABLE_VISUAL_CHECK"});$("modelStatus").textContent=r?.ok?"Optional TikTok image check is ready":"Image check could not start";status(r?.ok?"Image check started":"Reload TikTok and try again")}catch{status("Reload TikTok and try again")}};
-$("copyFlags").onclick=()=>chrome.storage.local.get(defaults,async c=>{const data={exportedAt:new Date().toISOString(),manualFlags:c.manualFlags||[],hiddenItems:c.hiddenItems||[],blockedAdvertisers:c.blockedAdvertisers||[],allowedAdvertisers:c.allowedAdvertisers||[],blockedCreators:c.blockedCreators||[],blockedEtsyShops:c.blockedEtsyShops||[]};try{await navigator.clipboard.writeText(JSON.stringify(data,null,2));status("Beta activity copied")}catch{status("Could not copy activity")}});
-$("clearLists").onclick=()=>chrome.storage.local.set({manualFlags:[],hiddenItems:[],blockedAdvertisers:[],blockedCategories:[],allowedAdvertisers:[],blockedCreators:[],blockedEtsyShops:[]},()=>{counts(defaults);status("Saved activity cleared")});chrome.storage.onChanged.addListener(()=>chrome.storage.local.get(defaults,counts));
+const defaults={protectionEnabled:true,protectSexual:true,protectGraphic:true,protectAnimalHarm:true,protectHate:true,protectAI:true,protectMisleading:true,protectNews:true,protectPromotional:true,tiktokEnabled:true,instagramEnabled:true,facebookEnabled:true,youtubeEnabled:true,xEnabled:true,redditEnabled:true,pinterestEnabled:true,blueskyEnabled:true,etsyEnabled:true,blockSponsored:false,blockDrama:true,blockSexualized:true,blockAI:true,showPlaceholder:true,customTerms:"DramaBox\nReelShort\nShortMax\nGoodShort\nFlexTV\nMoboReels",blockedAdvertisers:[],blockedCategories:[],allowedAdvertisers:[],blockedEtsyShops:[],blockedCreators:[],manualFlags:[],hiddenItems:[]};
+
+const ids=["protectionEnabled","protectSexual","protectGraphic","protectAnimalHarm","protectHate","protectAI","protectMisleading","protectNews","protectPromotional","tiktokEnabled","instagramEnabled","facebookEnabled","youtubeEnabled","xEnabled","redditEnabled","pinterestEnabled","blueskyEnabled","etsyEnabled","blockSponsored","showPlaceholder","customTerms"],$=id=>document.getElementById(id);
+
+function status(text){$("status").textContent=text;setTimeout(()=>{if($("status").textContent===text)$("status").textContent=""},2200)}
+
+function renderActivity(current){
+
+ const box=document.getElementById('saved-activity');if(!box)return;box.textContent='';
+
+ for(const record of (Array.isArray(current.manualFlags)?current.manualFlags:[]).slice(0,20)){
+
+  if(!record||typeof record!=='object')continue;const row=document.createElement('p');row.textContent=[record.site,record.reason,record.publisherName||record.publisherId].filter(v=>typeof v==='string').join(' · ')||'Legacy saved report';
+
+  try{const url=new URL(record.url);if(url.protocol==='https:'&&!url.username&&!url.password){const a=document.createElement('a');a.href=url.href;a.textContent=' Open original';a.target='_blank';a.rel='noopener noreferrer';row.append(a);}}catch{}box.append(row);
+
+ }
+
+ const rules=document.createElement('p');rules.textContent='Saved TikTok account rules: '+[...(Array.isArray(current.blockedAdvertisers)?current.blockedAdvertisers:[]).map(v=>'Block '+v),...(Array.isArray(current.allowedAdvertisers)?current.allowedAdvertisers:[]).map(v=>'Allow '+v)].join(';');box.append(rules);
+
+}
+
+function counts(current){renderActivity(current);const protection=document.getElementById("protection-status");if(protection)protection.textContent=current.protectionEnabled?"Website protection preference enabled · check a website from the toolbar":"Protection off";$("manualFlagsCount").textContent=(current.manualFlags||[]).length;$("blockedSourcesCount").textContent=(current.blockedEtsyShops||[]).length+(current.blockedAdvertisers||[]).length+(current.blockedCreators||[]).length}
+
+const local=FeedShieldBrowser.storage.local;
+
+const failure=error=>status('Could not access settings: '+error.message);
+
+let revision=0;const changed=new Set();
+
+function populate(current){for(const id of ids){const input=$(id);if(input.type==='checkbox')input.checked=current[id];else input.value=current[id]}counts(current);}
+
+const start=revision;local.get(defaults).then(current=>{if(revision===start)populate(current);else for(const id of ids)if(!changed.has(id)){const input=$(id);if(input.type==='checkbox')input.checked=current[id];else input.value=current[id];}}).catch(failure);
+
+for(const id of ids)$(id).addEventListener('change',()=>{const input=$(id),value=id==='showPlaceholder'?input.value==='true':input.type==='checkbox'?input.checked:input.value,patch={[id]:value};const alias={protectPromotional:'blockDrama',protectSexual:'blockSexualized',protectAI:'blockAI'}[id];if(alias)patch[alias]=value;local.set(patch).then(()=>status('Settings saved')).catch(failure);});
+
+$('copyFlags').onclick=()=>local.get(defaults).then(async current=>{const data={exportedAt:new Date().toISOString()};for(const key of ['manualFlags','hiddenItems','blockedAdvertisers','allowedAdvertisers','blockedCategories','blockedCreators','blockedEtsyShops'])data[key]=current[key]||[];await navigator.clipboard.writeText(JSON.stringify(data,null,2));status('Beta activity copied')}).catch(failure);
+
+$('clearLists').onclick=()=>(FeedShieldBrowser.activity?FeedShieldBrowser.activity({clear:true}):local.set({manualFlags:[],hiddenItems:[],blockedAdvertisers:[],blockedCategories:[],allowedAdvertisers:[],blockedCreators:[],blockedEtsyShops:[]})).then(()=>{counts({...defaults,protectionEnabled:$("protectionEnabled").checked});status('Saved activity cleared')}).catch(failure);
+
+FeedShieldBrowser.storage.onChanged.addListener((changes,area)=>{if(area!=='local')return;revision++;for(const id of ids)if(changes[id]){changed.add(id);const input=$(id),value=changes[id].newValue??defaults[id];if(input.type==='checkbox')input.checked=value;else input.value=value;}local.get(defaults).then(counts).catch(failure);});
+

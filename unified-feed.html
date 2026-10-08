@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>FeedShield article reader</title>
+  <link rel="stylesheet" href="unified-feed.css">
+<link rel="stylesheet" href="app-shell.css"><link rel="stylesheet" href="chippy-theme.css"></head>
+<body>
+  <main>
+    <h1>Article reader</h1><p class="help">The unified social feed is not available yet. This separate reader supports RSS and Atom articles.</p>
+    <p>A reading space for articles from the websites you choose.</p>
+    <div id="disabled" hidden></div>
+    <section id="experiment">
+      <div class="controls">
+        <label>Source <select id="source"><option value="all">All</option></select></label>
+        <label>Sort <select id="sort"><option value="source">Source order</option><option value="chronological">Chronological (newest first)</option></select></label>
+        <label>Filtered items <select id="presentation"><option value="replace">Replace</option><option value="blur">Blur</option></select></label>
+      </div>
+      <section id="live-feed">
+        <h2>Add a feed</h2>
+        <p>Add a feed link, then select Load to bring its articles here.</p>
+        <label>Feed link <input id="source-url" type="url" inputmode="url" autocomplete="off" size="48" placeholder="https://example.org/feed.xml"></label>
+        <label>Category <select id="source-category"><option value="">None</option><option>News</option><option>Gaming</option><option>Art</option><option>Cozy</option><option>Other</option></select></label>
+        <button id="source-add" type="button">Add feed</button>
+        <p id="source-status" role="status" aria-live="polite">Add your first feed to get started.</p>
+
+        <details><summary>How it works</summary><p>Use a website’s RSS or Atom feed link beginning with https://. A normal homepage link may not work. When you select Load, your browser asks for access to that website if needed. Links are saved on this device; articles last for this reading session. Social media timelines are not imported.</p></details><div id="source-list"></div>
+      </section>
+      <p id="count" aria-live="polite"></p>
+      <div id="feed" class="feed"></div>
+    </section>
+  </main>
+  <script src="browser-api.js"></script><script src="settings-model.js"></script><script src="settings.js"></script><script src="feed-policy.js"></script>
+  <script src="unified-feed/adapters.js"></script>
+  <script src="unified-feed/rss-atom.js"></script>
+  <script src="unified-feed/xml-fixtures.js"></script>
+  <script src="unified-feed/sources.js"></script>
+  <script src="unified-feed/core.js"></script>
+  <script src="unified-feed/live-feed.js"></script>
+  <script src="unified-feed/source-manager.js"></script>
+  <script src="unified-feed/ui.js"></script>
+  <script src="unified-feed/source-manager-ui.js"></script>
+<script src="chippy-placement.js"></script><script src="chippy-appearance.js"></script><script src="chippy-frames.js"></script><script src="chippy-renderer.js"></script><script src="chippy-care.js"></script><script src="chippy-live.js"></script><script src="app-shell.js"></script><script src="chippy-theme.js"></script></body>
+</html>

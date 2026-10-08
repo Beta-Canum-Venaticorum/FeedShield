@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>FeedShield companion placement prototype</title>
+  <link rel="stylesheet" href="companion-prototype.css">
+</head>
+<body>
+  <main>
+    <header><div><p class="eyebrow">FEEDSHIELD · VISUAL PROTOTYPE</p><h1>Tiny companion placement</h1><p>A simulated feed for reviewing behavior before any platform integration.</p></div><span>Not injected into websites</span></header>
+    <section class="prototype-controls" aria-label="Prototype controls">
+      <label>Session timer <select id="timer-minutes"><option value="1">1 minute (test)</option><option value="15">15 minutes</option><option value="25">25 minutes</option><option value="35" selected>35 minutes</option></select></label>
+      <button id="start-timer" type="button">Start timer</button>
+      <button id="manual-pause" type="button">I need a pause</button>
+      <button id="restore-companion" type="button">Turn companion on</button>
+      <span id="timer-status" role="status">Timer is off.</span>
+    </section>
+    <section class="simulated-feed" aria-label="Simulated supported feed">
+      <article class="post"><div class="post-head"><span class="avatar"></span><strong>Quiet gardening</strong><button data-feedshield-protected-control type="button">Post actions</button></div><div class="media garden"></div><p>A fabricated feed item used only to test companion placement.</p></article>
+      <aside class="feedshield-explanation" data-feedshield-protected-control><strong>FeedShield hid a fabricated item</strong><p>Muted term · example source</p><div><button>Show original</button><button>Always allow</button></div></aside>
+      <article class="post"><div class="post-head"><span class="avatar second"></span><strong>Cozy studio</strong><button data-feedshield-protected-control type="button">Post actions</button></div><div class="media studio"></div><p>The companion must stay clear of these controls.</p></article>
+    </section>
+    <div class="undo" data-feedshield-protected-control><span>Item hidden</span><button>Undo</button></div>
+  </main>
+
+  <aside id="companion" hidden class="companion" aria-label="FeedShield companion" data-position="bottom-right">
+    <button id="companion-face" class="face" type="button" aria-expanded="false" aria-controls="companion-card" title="Open FeedShield companion"><span id="eyes" aria-hidden="true">• •</span><span class="sr-only">Open FeedShield companion</span></button>
+    <section id="companion-card" class="companion-card" hidden aria-label="FeedShield companion prompt" aria-live="polite">
+      <div class="card-head"><strong>FeedShield companion</strong><button id="close-card" type="button" aria-label="Close companion card">×</button></div>
+      <p id="prompt-text">Your 35-minute session timer is up. Want a five-minute pause?</p>
+      <div id="prompt-actions" class="prompt-actions"><button data-choice="continue">Keep going</button><button data-choice="pause" class="primary">Pause</button><button data-choice="today">Don’t ask today</button></div>
+      <details><summary>Companion settings</summary>
+        <label><input id="site-enabled" type="checkbox" checked> Enable on this site</label>
+        <label><input id="reduced-motion" type="checkbox"> Reduced motion</label>
+        <button id="tuck-away" type="button">Tuck away</button><button id="turn-off" type="button">Turn companion off</button>
+      </details>
+      <p class="card-note">Keep going snoozes check-ins for 10 minutes. Filtering decisions and companion nudges are separate.</p>
+    </section>
+  </aside>
+  <button id="tucked-tab" class="tucked-tab" type="button" hidden aria-label="Show FeedShield companion">• •</button>
+  <p id="placement-status" class="sr-only" role="status"></p>
+  <script src="browser-api.js"></script><script src="companion-prototype.js"></script>
+</body>
+</html>

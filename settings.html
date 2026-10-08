@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>FeedShield</title><link rel="stylesheet" href="popup.css"><link rel="stylesheet" href="app-shell.css"><link rel="stylesheet" href="chippy-theme.css"></head>
+<body><main>
+  <header><div><p class="eyebrow">YOUR SPACE, YOUR CHOICE</p><h1>A calmer feed</h1><p id="protection-status" aria-live="polite">Loading protection settings…</p></div><label class="switch" title="Turn all protection on or off"><input aria-label="Enable FeedShield protection" id="protectionEnabled" type="checkbox"><span></span></label></header><details open><summary>Automatic text rules · TikTok</summary><h2 hidden>Choose your boundaries</h2><p class="help">AI-related, sexualized and promotional wording switches control TikTok text rules. Wording can appear in discussion or denial; matches do not prove AI generation, sponsorship or a policy violation. These rules match wording, not images or videos.</p>
+    <label class="row"><span>Sexualized wording</span><input id="protectSexual" type="checkbox"></label>
+    <label class="row"><span>Hide TikTok AI-related wording</span><input id="protectAI" type="checkbox"></label>
+    <label class="row"><span>Promotional and short-drama wording</span><input id="protectPromotional" type="checkbox"></label>
+  </details>
+
+  <details><summary>Manual-report preferences</summary><p class="help">Saved preferences only. These switches do not automatically detect or hide content. Use Tell FeedShield on a post to save a report.</p>
+    <label class="row"><span>Graphic, frightening or self-harm content</span><input id="protectGraphic" type="checkbox"></label>
+    <label class="row"><span>Animal harm</span><input id="protectAnimalHarm" type="checkbox"></label>
+    <label class="row"><span>Hate or targeted harassment</span><input id="protectHate" type="checkbox"></label>
+    <label class="row"><span>Scams, impersonation or misleading claims</span><input id="protectMisleading" type="checkbox"></label>
+    <label class="row"><span>Breaking news, old news or conflict footage</span><input id="protectNews" type="checkbox"></label>
+  </details>
+
+  <details><summary>Protected sites</summary><h2 hidden>Protected sites</h2><p class="help">Protection requires browser site access. Use these switches to pause individual sites.</p>
+    <label class="row"><span>TikTok <em>text and manual beta</em></span><input id="tiktokEnabled" type="checkbox"></label>
+    <label class="row"><span>Instagram <em>manual beta</em></span><input id="instagramEnabled" type="checkbox"></label>
+    <label class="row"><span>Facebook <em>manual beta</em></span><input id="facebookEnabled" type="checkbox"></label>
+    <label class="row"><span>YouTube <em>manual beta</em></span><input id="youtubeEnabled" type="checkbox"></label>
+    <label class="row"><span>X <em>manual beta</em></span><input id="xEnabled" type="checkbox"></label>
+    <label class="row"><span>Reddit <em>manual beta</em></span><input id="redditEnabled" type="checkbox"></label>
+    <label class="row"><span>Pinterest <em>manual beta</em></span><input id="pinterestEnabled" type="checkbox"></label>
+    <label class="row"><span>Bluesky <em>manual beta</em></span><input id="blueskyEnabled" type="checkbox"></label>
+    <label class="row"><span>Etsy <em>marketplace beta</em></span><input id="etsyEnabled" type="checkbox"></label>
+  </details>
+
+  <details id="general-settings"><summary>General settings</summary>
+    <p class="quiet">No image classification is included. TikTok uses text/label rules; other sites use muted terms and manual saved-item controls. Choose Replace to show an explanation and Reveal on supported websites, or Block to hide matching items. Reader blur is a separate option.</p>
+    <label class="row"><span>Hide TikTok sponsorship wording</span><input id="blockSponsored" type="checkbox"></label>
+    <label class="stack"><span>Filtered posts on websites</span><select id="showPlaceholder"><option value="true">Replace with an explanation and Reveal</option><option value="false">Block (hide the item)</option></select></label>
+    <label class="stack"><span>Muted words, hashtags, advertisers or shops</span><textarea id="customTerms" rows="4" placeholder="One per line"></textarea></label>
+  </details>
+
+  <section class="activity"><h2>Saved activity</h2><p>Publishing account rules use validated TikTok handles. Older display-name rules are preserved for export but are inactive until you reselect an account on a post. Names do not establish official verification.</p><p class="help">Reports and hidden-post rules stay on this device. Reports do not train a classifier.</p><div class="stats"><div><strong id="manualFlagsCount">0</strong><span>saved items</span></div><div><strong id="blockedSourcesCount">0</strong><span>saved source rules</span></div></div><div id="saved-activity"></div><button id="copyFlags" class="secondary">Copy activity for beta testing</button><button id="clearLists" class="text-button">Clear saved activity</button></section>
+  <div id="status" aria-live="polite"></div><p class="privacy">Settings save automatically. Nothing is reported automatically. FeedShield does not read passwords, forms or local files.</p>
+</main><script src="browser-api.js"></script><script src="settings-model.js"></script><script src="settings.js"></script><script src="popup.js"></script><script src="app-shell.js"></script><script src="chippy-appearance.js"></script><script src="chippy-theme.js"></script></body></html>
