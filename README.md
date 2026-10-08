@@ -1,10 +1,10 @@
-# FeedShield v0.9.3 clean beta
+# FeedShield v0.9.19
 
 This hotfix recognizes TikTok's visible “Creator labeled as AI-generated” notice automatically. It also prevents one TikTok report from hiding subsequently loaded videos and removes broad saved page addresses from earlier builds.
 
 FeedShield is a browser-extension prototype for choosing what enters your feeds. This build is for small, supervised beta testing—not public release.
 
-## What works in this beta
+## What works in this version
 
 | Site | Current capability |
 |---|---|
